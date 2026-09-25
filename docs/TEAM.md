@@ -10,10 +10,10 @@
 
 | STT | Họ và tên | MSSV | Email | Vai trò & Phân công công việc | Báo cáo cá nhân |
 |---:|---|---|---|---|---|
-| 1 | | | | Trưởng nhóm / Pipeline Integrator (`core/`, `phase1.py`, `corruption_flow.py`) | `report/<MSSV1>_HoTen.md` |
-| 2 | | | | Data Foundation & Recovery (`crossref.py`, `cleaning.py`, raw data) | `report/<MSSV2>_HoTen.md` |
-| 3 | | | | RAG & Vector Index (`retrieval/index.py`, `embeddings.py`, ChromaDB) | `report/<MSSV3>_HoTen.md` |
-| 4 | | | | Observability & Evaluation (`quality.py` GX 1.x, `testset.py`, reporting) | `report/<MSSV4>_HoTen.md` |
+| 1 | Dũng | [MSSV Dũng] | [Email Dũng] | Trưởng nhóm / Pipeline Integrator (`core/`, `phase1.py`, `corruption_flow.py`) | `report/Dung_PipelineLead.md` |
+| 2 | Khánh | [MSSV Khánh] | [Email Khánh] | Data Foundation & Recovery (`crossref.py`, `cleaning.py`, raw data) | `report/Khanh_DataFoundation.md` |
+| 3 | Minh | [MSSV Minh] | [Email Minh] | RAG & Vector Index (`retrieval/index.py`, `embeddings.py`, ChromaDB) | `report/Minh_RAGSpecialist.md` |
+| 4 | Ngọc | [MSSV Ngọc] | [Email Ngọc] | Observability & Evaluation (`quality.py` GX 1.x, `testset.py`, reporting) | `report/Ngoc_Observability.md` |
 
 *(Nếu nhóm có 3 hoặc 5-6 thành viên, xem bảng phân công chi tiết theo vai trò trong file `CHECKPOINTS.md`)*.
 
@@ -21,7 +21,7 @@
 
 ## # Cá nhân
 
-### ## HoVaTen1-MSSV1
+### ## Dung-PipelineLead
 - **Vai trò:** Trưởng nhóm & Điều phối Pipeline.
 - **Công việc chi tiết đã hoàn thành:**
   - Thiết lập cấu hình hệ thống `core/config.py` và đường dẫn artifacts `core/utils.py`.
