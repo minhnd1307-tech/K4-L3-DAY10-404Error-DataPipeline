@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+import os
+os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "true"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+import logging
+# Tắt log cảnh báo thừa từ transformers khi load model
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
 from functools import lru_cache
 
 from langchain_core.embeddings import Embeddings

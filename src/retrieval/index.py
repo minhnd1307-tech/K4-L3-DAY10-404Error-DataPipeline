@@ -36,7 +36,10 @@ class LocalEmbeddingIndex:
         self.embedding_backend = "chroma"
         self.embedding_model = MiniLMEmbeddings(settings.embedding_model)
         self.client = chromadb.PersistentClient(path=str(persist_path))
-        self.collection = self.client.get_collection(name=collection_name)
+        self.collection = self.client.get_or_create_collection(
+            name=collection_name,
+            metadata={"hnsw:space": "cosine"},
+        )
         self.documents_by_paper_id = {document["paper_id"].lower(): document for document in documents}
         self.documents_by_title = {document["title"].lower(): document for document in documents}
 
@@ -98,9 +101,9 @@ class LocalEmbeddingIndex:
             client.delete_collection(name=collection_name)
         except Exception:
             pass
-        collection = client.create_collection(
+        collection = client.get_or_create_collection(
             name=collection_name,
-            configuration={"hnsw": {"space": "cosine"}},
+            metadata={"hnsw:space": "cosine"},
         )
         embeddings = embedding_model.embed_documents([document["content"] for document in documents])
         collection.add(
@@ -131,20 +134,48 @@ class LocalEmbeddingIndex:
     @classmethod
     def load(cls, settings: Settings, embeddings_path: Path | None = None) -> "LocalEmbeddingIndex":
         payload = read_json(embeddings_path or settings.paths.embeddings_json)
+        # Su dung chroma_dir hien tai cua settings thay vi duong dan tuyet doi cu trong file JSON
+        persist_path = settings.paths.chroma_dir
         return cls(
             settings=settings,
             collection_name=payload["collection_name"],
             documents=payload["documents"],
-            persist_path=Path(payload["persist_path"]),
+            persist_path=persist_path,
         )
 
     def search(self, query: str, top_k: int | None = None) -> list[SearchResult]:
+        limit = top_k or self.settings.top_k
+        count = self.collection.count()
+        if count == 0:
+            return []
+        effective_limit = min(limit, count)
+
         query_embedding = self.embedding_model.embed_query(query)
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=top_k or self.settings.top_k,
-            include=["documents", "metadatas", "distances"],
-        )
+        try:
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=effective_limit,
+                include=["documents", "metadatas", "distances"],
+            )
+        except Exception:
+            # Fallback sang cos_sim tinh bang numpy neu hnswlib tren windows bao loi tree
+            import numpy as np
+            q_vec = np.array(query_embedding)
+            scored_fallback: list[SearchResult] = []
+            for doc in self.documents:
+                doc_vec = np.array(self.embedding_model.embed_query(doc["content"]))
+                sim = float(np.dot(q_vec, doc_vec) / (np.linalg.norm(q_vec) * np.linalg.norm(doc_vec) + 1e-9))
+                scored_fallback.append(
+                    SearchResult(
+                        paper_id=str(doc["paper_id"]),
+                        title=str(doc["title"]),
+                        score=max(0.0, sim),
+                        content=str(doc["content"]),
+                        metadata=dict(doc.get("metadata", {})),
+                    )
+                )
+            scored_fallback.sort(key=lambda x: x.score, reverse=True)
+            return scored_fallback[:effective_limit]
         ids = results.get("ids", [[]])[0]
         documents = results.get("documents", [[]])[0]
         metadatas = results.get("metadatas", [[]])[0]
