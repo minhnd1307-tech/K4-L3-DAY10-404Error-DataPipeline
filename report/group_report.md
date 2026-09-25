@@ -6,20 +6,19 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Khóa/Lớp         | [K3 hoặc K4]              |
-| Tên nhóm         | [Tên hoặc mã nhóm]     |
-| Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | [YYYY-MM-DD]               |
+| Khóa/Lớp         | AI-ENGINEER-K4             |
+| Tên nhóm         | 404Error                   |
+| Repository         | https://github.com/minhnd1307-tech/K4-L3-DAY10-404Error-DataPipeline |
+| Ngày hoàn thành | 2026-09-25                 |
 
 ### Thành viên và phân công
 
 | STT | Họ và tên | MSSV | Vai trò chính | Module/deliverable sở hữu |
 | --: | --- | --- | --- | --- |
-| 1 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 2 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 3 | [Họ tên] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 4 | [Nếu có] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
-| 5 | [Nếu có] | [MSSV] | [Vai trò] | [File, hàm hoặc artifact] |
+| 1 | Lưu Xuân Dũng | 2A202602745 | Trưởng nhóm / Pipeline Lead & Integrator | `src/core/`, `src/pipelines/phase1.py`, `src/pipelines/corruption_flow.py` |
+| 2 | Nguyễn Duy Khánh | 2A202602736 | Data Foundation Owner | `src/ingestion/crossref.py`, `src/ingestion/cleaning.py`, raw data recovery |
+| 3 | Nguyễn Đức Minh | 2A202602891 | RAG & Vector Index Specialist | `src/retrieval/index.py`, `src/retrieval/embeddings.py`, ChromaDB |
+| 4 | Hoàng Bích Ngọc | 2A202602766 | Observability & Evaluation Lead | `src/observability/quality.py` (GX 1.x), `src/evaluation/testset.py`, reporting |
 
 ## 2. Tóm tắt kết quả
 

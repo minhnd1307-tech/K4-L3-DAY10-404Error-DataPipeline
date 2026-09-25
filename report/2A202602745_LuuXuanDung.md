@@ -4,13 +4,14 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | Dũng                     |
-| MSSV               | [Điền MSSV của Dũng]      |
-| Khóa/Lớp         | AI-ENGINEER-K4           |
-| Tên nhóm         | [Điền tên nhóm của bạn]   |
+| Họ và tên       | Lưu Xuân Dũng             |
+| MSSV               | 2A202602745               |
+| Email              | luuxuandung2004@gmail.com |
+| Khóa/Lớp         | AI-ENGINEER-K4            |
+| Tên nhóm         | 404Error                  |
 | Vai trò chính    | Trưởng nhóm / Pipeline Lead & Integrator |
-| Repository         | K4-L3-DAY10-TenNhom-DataPipeline |
-| Ngày hoàn thành | 2026-09-25               |
+| Repository         | K4-L3-DAY10-404Error-DataPipeline |
+| Ngày hoàn thành | 2026-09-25                |
 
 ---
 
@@ -111,5 +112,5 @@ Xây dựng khung điều phối (orchestration framework) kết nối các mắ
 - [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
 - [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
 
-**Họ và tên:** Dũng  
+**Họ và tên:** Lưu Xuân Dũng  
 **Ngày xác nhận:** 2026-09-25  
