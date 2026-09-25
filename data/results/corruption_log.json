@@ -1,0 +1,72 @@
+[
+  {
+    "error_type": "drop_latest_records",
+    "description": "Dropped 4 latest records",
+    "affected_ids": "['10.55041/isjem07213', '10.1093/sleep/zsag091.0346', '10.20944/preprints202604.0339.v1', '10.63125/gseh0k17']"
+  },
+  {
+    "error_type": "blank_summary",
+    "description": "Cleared summary for paper 10.21203/rs.3.rs-10489777/v1",
+    "affected_ids": "10.21203/rs.3.rs-10489777/v1"
+  },
+  {
+    "error_type": "blank_summary",
+    "description": "Cleared summary for paper 10.70267/aitia.2026482489",
+    "affected_ids": "10.70267/aitia.2026482489"
+  },
+  {
+    "error_type": "inject_noise",
+    "description": "Injected noise characters into summary for paper 10.21203/rs.3.rs-10349437/v1",
+    "affected_ids": "10.21203/rs.3.rs-10349437/v1"
+  },
+  {
+    "error_type": "inject_noise",
+    "description": "Injected noise characters into summary for paper 10.54254/2755-2721/2026.36624",
+    "affected_ids": "10.54254/2755-2721/2026.36624"
+  },
+  {
+    "error_type": "truncate_title",
+    "description": "Truncated title to under 8 chars for paper 10.36887/2415-8453-2026-3-2",
+    "affected_ids": "10.36887/2415-8453-2026-3-2"
+  },
+  {
+    "error_type": "truncate_title",
+    "description": "Truncated title to under 8 chars for paper 10.28932/jutisi.v12i2.13099",
+    "affected_ids": "10.28932/jutisi.v12i2.13099"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.21203/rs.3.rs-10489777/v1",
+    "affected_ids": "10.21203/rs.3.rs-10489777/v1"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.70267/aitia.2026482489",
+    "affected_ids": "10.70267/aitia.2026482489"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.21203/rs.3.rs-10349437/v1",
+    "affected_ids": "10.21203/rs.3.rs-10349437/v1"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.54254/2755-2721/2026.36624",
+    "affected_ids": "10.54254/2755-2721/2026.36624"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.36887/2415-8453-2026-3-2",
+    "affected_ids": "10.36887/2415-8453-2026-3-2"
+  },
+  {
+    "error_type": "stale_date",
+    "description": "Set published date to stale 2024-01-01 for paper 10.28932/jutisi.v12i2.13099",
+    "affected_ids": "10.28932/jutisi.v12i2.13099"
+  },
+  {
+    "error_type": "duplicate_rows",
+    "description": "Duplicated 2 rows",
+    "affected_ids": "['10.21203/rs.3.rs-10489777/v1', '10.70267/aitia.2026482489']"
+  }
+]
