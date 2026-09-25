@@ -166,16 +166,18 @@ elif mode == "📈 Metrics Comparison (3 States)":
                 data = json.load(f)
             metrics_rows.append({
                 "Trạng thái": label,
-                "Retrieval Hit Rate": data.get("retrieval_hit_rate", 0.0),
-                "Mean Token F1": data.get("mean_token_f1", 0.0),
-                "LLM Judge Avg Score": data.get("judge_average_score", 0.0),
+                "Retrieval Hit Rate": f"{data.get('retrieval_hit_rate', 0.0):.4f}",
+                "Mean Token F1": f"{data.get('mean_token_f1', 0.0):.4f}",
+                "Judge Accuracy": f"{data.get('judge_accuracy', 0.0):.4f}",
+                "LLM Judge Avg Score (1-5)": f"{data.get('mean_judge_score', 0.0):.2f} / 5.0",
             })
         else:
             metrics_rows.append({
                 "Trạng thái": label,
                 "Retrieval Hit Rate": "Chưa có",
                 "Mean Token F1": "Chưa có",
-                "LLM Judge Avg Score": "Chưa có",
+                "Judge Accuracy": "Chưa có",
+                "LLM Judge Avg Score (1-5)": "Chưa có",
             })
 
     st.table(pd.DataFrame(metrics_rows))
