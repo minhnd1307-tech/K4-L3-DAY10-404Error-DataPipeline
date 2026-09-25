@@ -38,7 +38,12 @@ def build_clean_dataframe(records: list[PaperRecord], run_date: datetime) -> pd.
             "summary": summary,
             "authors_joined": authors,
             "categories_joined": categories,
+            "primary_category": r.primary_category,
             "published": r.published,
+            "updated": r.updated,
+            "abs_url": r.abs_url,
+            "pdf_url": r.pdf_url,
+            "comment": r.comment,
             "age_days": age_days,
             "summary_chars": len(summary),
             "text_for_embedding": text_for_embedding
