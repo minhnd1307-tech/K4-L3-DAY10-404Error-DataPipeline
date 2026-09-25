@@ -135,4 +135,3 @@ def main() -> None:
     print("\n" + "=" * 70)
     print(f"🎉 HOAN THANH PHASE 1 BASELINE PIPELINE TRONG {elapsed:.2f} GIAY!")
     print("=" * 70)
-
