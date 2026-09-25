@@ -4,12 +4,14 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | Nguyễn Duy Khánh                     |
-| MSSV               | 2A202602736      |
-| Tên nhóm         |    404Error     |
+| Họ và tên       | Nguyễn Duy Khánh          |
+| MSSV               | 2A202602736               |
+| Email              | khanhqewr1900@gmail.com   |
+| Khóa/Lớp         | AI-ENGINEER-K4            |
+| Tên nhóm         | 404Error                  |
 | Vai trò chính    | Data Foundation Owner & Recovery |
-| Repository         | K4-L3-DAY10-TenNhom-DataPipeline |
-| Ngày hoàn thành | 2026-09-25               |
+| Repository         | https://github.com/minhnd1307-tech/K4-L3-DAY10-404Error-DataPipeline |
+| Ngày hoàn thành | 2026-09-25                |
 
 ---
 
@@ -19,8 +21,8 @@
 
 | Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái |
 | ------------------ | --------------------- | ---------------- | ----------------- | :---: |
-| Data Ingestion & Preservation | `src/ingestion/crossref.py` | API URL, query params, raw snapshot file | Danh sách `PaperRecord` đã parse và raw artifacts JSON | Hoàn thành |
-| Data Cleaning & Normalization | `src/ingestion/cleaning.py` | Danh sách `PaperRecord` gốc | DataFrame `papers_clean.csv` đã khử nhiễu, nối chuỗi `text_for_embedding` | Hoàn thành |
+| Data Ingestion & Preservation | `src/ingestion/crossref.py` | API URL, query params, raw snapshot file | Danh sách `PaperRecord` đã parse và raw artifacts JSON (`crossref_response.json`, `crossref_records.json`) | Hoàn thành |
+| Data Cleaning & Normalization | `src/ingestion/cleaning.py` | Danh sách `PaperRecord` gốc | DataFrame `papers_clean.csv/json` đã khử nhiễu, nối chuỗi `text_for_embedding` | Hoàn thành |
 | Idempotent Repair Logic | Hàm `build_clean_dataframe` | `data/raw/crossref_records.json` | Dữ liệu sạch tái tạo hoàn hảo (Repaired Dataset) | Hoàn thành |
 
 ### Việc hỗ trợ ngoài phạm vi chính
@@ -48,8 +50,8 @@
 Xây dựng nền móng dữ liệu (Data Foundation) vững chắc, đảm bảo dữ liệu đầu vào không bị rác (Garbage In) trước khi đưa vào kho Vector. Đồng thời, thiết kế cơ chế khôi phục (Self-healing) đảm bảo tính Idempotent khi dữ liệu bị hỏng hóc ở môi trường Production.
 
 ### Cách triển khai
-1. **Thu thập (`crossref.py`):** Viết logic loại bỏ các thẻ HTML rác như `<jats:p>` trong tóm tắt bằng biểu thức Regex. Bắt lỗi kết nối mạng để tự động kích hoạt Dual-Mode fallback sang local snapshot khi API báo 429.
-2. **Làm sạch (`cleaning.py`):** Ghép nối các trường thành khối ngữ cảnh `text_for_embedding` chuẩn hóa. Sử dụng cơ chế `drop_duplicates(subset=["paper_id"])` và parse thời gian với múi giờ đồng nhất.
+1. **Thu thập (`crossref.py`):** Viết logic loại bỏ các thẻ HTML rác như `<jats:p>` trong tóm tắt bằng biểu thức Regex. Bắt lỗi kết nối mạng để tự động kích hoạt Dual-Mode fallback sang local snapshot khi API báo 429 hoặc mất kết nối.
+2. **Làm sạch (`cleaning.py`):** Ghép nối các trường thành khối ngữ cảnh `text_for_embedding` chuẩn hóa gồm 5 phần. Sử dụng cơ chế `drop_duplicates(subset=["paper_id"])` và parse thời gian với múi giờ UTC đồng nhất.
 3. **Phục hồi (Repair):** Thiết kế hàm làm sạch như một *Pure Function*, không phụ thuộc trạng thái ngoài. Do đó, khi bị luồng Corruption làm hỏng, chỉ cần đọc lại từ kho lưu trữ thô (Raw Preservation) và ném vào hàm này, dữ liệu sạch lập tức được tái sinh 100%.
 
 ### Input, output và contract
@@ -77,7 +79,7 @@ Xây dựng nền móng dữ liệu (Data Foundation) vững chắc, đảm bả
 ## 6. Một lỗi hoặc blocker đã xử lý
 
 - **Triệu chứng/lỗi nguyên văn:** `KeyError: 'abs_url'` khi chạy lệnh `python script/run_phase1.py`.
-- **Nguyên nhân gốc:** Hàm `build_clean_dataframe` của tôi tạo DataFrame nhưng quên đẩy cột `abs_url` từ bản ghi gốc sang DataFrame sạch. Trong khi đó, module `index.py` của Thành viên 3 lại cần cột này làm Metadata cho ChromaDB.
+- **Nguyên nhân gốc:** Hàm `build_clean_dataframe` tạo DataFrame nhưng quên đẩy cột `abs_url` từ bản ghi gốc sang DataFrame sạch. Trong khi đó, module `index.py` của Thành viên 3 lại cần cột này làm Metadata cho ChromaDB.
 - **Cách xử lý:** Bổ sung `abs_url` (cùng các trường khác như `pdf_url`, `primary_category`) vào Dict trước khi append vào danh sách dữ liệu.
 - **Cách xác minh sau khi sửa:** Chạy lại `python script/run_phase1.py` và luồng pipeline vượt qua được khâu nạp Index mà không bị văng lỗi.
 
@@ -88,7 +90,7 @@ Xây dựng nền móng dữ liệu (Data Foundation) vững chắc, đảm bả
 1. **Dữ liệu đi từ Crossref đến vector index như thế nào?**
    Dữ liệu được tải dạng cục JSON từ Crossref, qua hàm `parse_crossref_payload()` để thành list các `PaperRecord`. Hàm `build_clean_dataframe()` xử lý list này thành pandas DataFrame, làm phẳng thành `text_for_embedding`. Khối text này được model nhúng thành vector số học và lưu vào ChromaDB.
 2. **Tại sao lại cần phải lưu trữ Raw Preservation?**
-   Đóng vai trò như hòm cấp cứu. Nếu các quá trình transformation (làm sạch/thay đổi) vô tình làm hỏng data, hoặc mạng chết, chúng ta không cần gọi API tải lại từ đầu mà chỉ việc chọc thẳng vào file Raw để tái tạo quá trình làm sạch.
+   Đóng vai trò như hòm cấp cứu (Single Source of Truth). Nếu các quá trình transformation (làm sạch/thay đổi) vô tình làm hỏng data, hoặc mạng chết, chúng ta không cần gọi API tải lại từ đầu mà chỉ việc chọc thẳng vào file Raw để tái tạo quá trình làm sạch.
 3. **Idempotent Repair nghĩa là gì trong bài lab này?**
    Idempotent là tính chất "thực thi N lần kết quả không đổi". Ở bài lab này, nó có nghĩa là dù file dữ liệu hiện hành có bị tiêm lỗi rác 1 lần hay 100 lần, thì tiến trình Repair luôn đọc lại từ bản ghi Raw gốc, đưa qua logic clean bất biến để cho ra đúng 24 bản ghi sạch chuẩn như lúc ban đầu. 
 
@@ -102,5 +104,5 @@ Xây dựng nền móng dữ liệu (Data Foundation) vững chắc, đảm bả
 - [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
 - [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
 
-**Họ và tên:** Khánh  
+**Họ và tên:** Nguyễn Duy Khánh  
 **Ngày xác nhận:** 2026-09-25  

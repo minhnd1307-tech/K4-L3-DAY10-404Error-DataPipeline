@@ -4,20 +4,23 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | Nguyễn Đức Minh                      |
-| MSSV               | 2A202602891       |
-| Khóa/Lớp         | K4/ L3A   |
-| Tên nhóm         | 404Error         |
-| Vai trò chính    | RAG & Vector Index Specialist (Thành viên 3) |
-| Repository         | K4-L3-DAY10-404Error-DataPipeline |
+| Họ và tên       | Nguyễn Đức Minh            |
+| MSSV               | 2A202602891               |
+| Email              | minhnd1307@gmail.com      |
+| Khóa/Lớp         | AI-ENGINEER-K4 / L3A      |
+| Tên nhóm         | 404Error                  |
+| Vai trò chính    | RAG & Vector Index Specialist |
+| Repository         | https://github.com/minhnd1307-tech/K4-L3-DAY10-404Error-DataPipeline |
 | Ngày hoàn thành | 2026-09-25                |
+
+---
 
 ## 2. Vai trò và phạm vi công việc
 
 ### Phần việc sở hữu
 
 | Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái |
-| ------------------ | --------------------- | ---------------- | ----------------- | ---------- |
+| ------------------ | --------------------- | ---------------- | ----------------- | :---: |
 | Vector Store & Embeddings Indexing | `src/retrieval/index.py` (`LocalEmbeddingIndex.build`, `search`, `lookup`) | Cleaned/Corrupted/Repaired DataFrame từ TV2 & TV4 | 3 ChromaDB collections (`papers-baseline`, `papers-corrupted`, `papers-repaired`) và các file manifest JSON | Hoàn thành |
 | Local Embedding Model Engine | `src/retrieval/embeddings.py` (`MiniLMEmbeddings`) | Danh sách chuỗi `text_for_embedding` / Query string | Vector embedding 384 chiều đã được chuẩn hóa L2-norm (cosine metric) | Hoàn thành |
 | Multi-Provider LLM Router & Agent | `src/retrieval/llm.py`, `src/retrieval/agent.py`, `src/retrieval/qa.py` | Settings cấu hình provider (`mock`, `gemini`, `openai`), câu hỏi kiểm thử | Trả về LLM client, QA Agent trang bị 2 tool (`semantic_search_papers`, `lookup_paper`) | Hoàn thành |
@@ -32,6 +35,8 @@
 | Tích hợp Baseline & Corruption Pipelines | TV1 (Dũng) - `src/pipelines/phase1.py` & `corruption_flow.py` | Cung cấp hàm build index và lookup để chạy trơn tru trong luồng đánh giá tự động |
 | Khắc phục lỗi tương thích Python 3.10 / 3.11 | Cả nhóm - `src/core/config.py`, `src/core/utils.py` | Sửa `from datetime import UTC` thành `timezone.utc` để code chạy mượt trên mọi môi trường máy của nhóm |
 
+---
+
 ## 3. Kết quả theo vai trò
 
 | Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao | Cách xác minh |
@@ -39,6 +44,8 @@
 | Xây dựng và kiểm thử Local Embedding Index | `src/retrieval/index.py`, `src/retrieval/embeddings.py` | Tạo thành công 3 collection ChromaDB độc lập, dimension 384 | `pytest tests/test_retrieval.py -v` |
 | Xây dựng QA Agent & Extraction Logic | `src/retrieval/qa.py`, `src/retrieval/agent.py` | Trích xuất câu trả lời chuẩn xác (authors, date, summary) | Chạy thử nghiệm với `answer_question` |
 | Phát triển Interactive Dashboard phục vụ Live Demo (CP6) | `app.py` | Ứng dụng Streamlit demo 3 trạng thái và quan sát Quality Gate | `streamlit run app.py` |
+
+---
 
 ## 4. Giải thích phần kỹ thuật đã thực hiện
 
@@ -67,6 +74,8 @@ pytest tests/test_retrieval.py -v
 - **Kết quả mong đợi:** 3 test cases đều PASSED (`test_minilm_embeddings`, `test_chroma_build_and_search`, `test_mock_llm_and_qa_agent`).
 - **Kết quả thực tế:** Vector embedding có chiều dài 384, L2-norm $\approx 1.0$, ChromaDB query trả về đúng tài liệu có score tương đồng cao nhất.
 
+---
+
 ## 5. Một quyết định kỹ thuật quan trọng
 
 - **Bối cảnh:** Lựa chọn giữa việc dùng dịch vụ Cloud Embedding API (OpenAI `text-embedding-3-small`) hay mô hình Local Embedding (`sentence-transformers/all-MiniLM-L6-v2`).
@@ -75,6 +84,8 @@ pytest tests/test_retrieval.py -v
   2. *HuggingFace all-MiniLM-L6-v2 (384 chiều) local:* Chạy trực tiếp trên CPU/RAM của máy trạm, hoàn toàn miễn phí, tốc độ tạo embedding cực nhanh (~1-2 giây cho 24 tài liệu) và hoàn toàn offline.
 - **Phương án đã chọn:** Sử dụng `sentence-transformers/all-MiniLM-L6-v2` kết hợp với ChromaDB local persistence.
 - **Lý do:** Đảm bảo tính **Reproducibility 100%** (tính tái lập) cho bài lab. Khi giám khảo hoặc trợ giảng clone repo về máy chấm thi, hệ thống có thể chạy offline ngay lập tức mà không cần cấu hình credit API cho phần embedding.
+
+---
 
 ## 6. Một lỗi hoặc blocker đã xử lý
 
@@ -93,6 +104,8 @@ pytest tests/test_retrieval.py -v
 - **Cách xác minh sau khi sửa:** Chạy lại `pytest tests/test_retrieval.py -v`, module `core` và `datetime` được import trơn tru không còn báo lỗi.
 - **Điều học được:** Luôn chú ý tính tương thích ngược (backward compatibility) giữa các phiên bản Python nhỏ (3.10 vs 3.11) và cấu hình `conftest.py` chuẩn cho test suite.
 
+---
+
 ## 7. Hiểu biết về luồng end-to-end
 
 1. Dữ liệu thô từ Crossref API được tải và bảo toàn nguyên trạng (Raw Preservation) để tạo điểm tựa phục hồi (Data Lineage).
@@ -100,3 +113,16 @@ pytest tests/test_retrieval.py -v
 3. Tầng Retrieval (phần việc của tôi) chuyển hóa văn bản thành không gian vector bằng MiniLM và lưu vào ChromaDB. Agent sử dụng không gian này để truy xuất tài liệu và trả lời câu hỏi.
 4. Khi dữ liệu bị tiêm độc tố (Data Corruption) ở Phase 2, các bài báo bị cắt ngắn, mất tóm tắt hoặc chèn chuỗi ký tự rác, dẫn đến việc khoảng cách Cosine bị bóp méo $\rightarrow$ Agent tìm kiếm sai $\rightarrow$ Điểm Hit Rate và Token F1 sụt giảm nghiêm trọng (chứng minh **Silent Failure**).
 5. Cuối cùng, cơ chế Idempotent Repair nạp lại dữ liệu từ Raw ban đầu, tái xây dựng lại toàn bộ không gian vector ChromaDB, giúp Agent khôi phục lại phong độ 100% như lúc ban đầu.
+
+---
+
+## 8. Cam kết của thành viên
+
+- [x] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [x] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [x] Mọi kết luận về kết quả đều có artifact hoặc metric để đối chiếu.
+- [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
+
+**Họ và tên:** Nguyễn Đức Minh  
+**Ngày xác nhận:** 2026-09-25  
