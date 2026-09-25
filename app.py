@@ -2,8 +2,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 import pandas as pd
 import streamlit as st
+
+# Thêm thư mục src vào sys.path để Streamlit luôn tìm thấy các package nội bộ
+src_dir = Path(__file__).resolve().parent / "src"
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
 
 from core.config import load_settings
 from retrieval.index import LocalEmbeddingIndex
